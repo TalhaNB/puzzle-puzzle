@@ -1,174 +1,16 @@
 import { useState, useRef, useCallback } from "react";
+import { styles } from "./styles";
 
 const App = () => {
-  const styles = {
-    container: {
-      maxWidth: "1200px",
-      margin: "0 auto",
-      padding: "20px",
-      background: "linear-gradient(135deg, #667eea 0%, #764ba2 100%)",
-      minHeight: "100vh",
-      fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif",
-    },
-    innerContainer: {
-      background: "rgba(255, 255, 255, 0.95)",
-      backdropFilter: "blur(10px)",
-      borderRadius: "20px",
-      padding: "30px",
-      boxShadow: "0 20px 40px rgba(0,0,0,0.1)",
-    },
-    title: {
-      textAlign: "center",
-      color: "#333",
-      marginBottom: "30px",
-      fontSize: "2.5em",
-      background: "linear-gradient(45deg, #667eea, #764ba2)",
-      WebkitBackgroundClip: "text",
-      WebkitTextFillColor: "transparent",
-      backgroundClip: "text",
-      fontWeight: "bold",
-    },
-    uploadSection: {
-      border: "3px dashed #667eea",
-      borderRadius: "15px",
-      padding: "40px",
-      textAlign: "center",
-      marginBottom: "30px",
-      transition: "all 0.3s ease",
-      background:
-        "linear-gradient(45deg, rgba(102, 126, 234, 0.1), rgba(118, 75, 162, 0.1))",
-      cursor: "pointer",
-    },
-    uploadSectionHover: {
-      borderColor: "#764ba2",
-      transform: "translateY(-2px)",
-      boxShadow: "0 10px 25px rgba(102, 126, 234, 0.2)",
-    },
-    uploadSectionDragover: {
-      borderColor: "#764ba2",
-      background:
-        "linear-gradient(45deg, rgba(102, 126, 234, 0.2), rgba(118, 75, 162, 0.2))",
-    },
-    uploadBtn: {
-      background: "linear-gradient(45deg, #667eea, #764ba2)",
-      color: "white",
-      padding: "15px 30px",
-      border: "none",
-      borderRadius: "50px",
-      cursor: "pointer",
-      fontSize: "16px",
-      fontWeight: "600",
-      transition: "all 0.3s ease",
-      boxShadow: "0 5px 15px rgba(102, 126, 234, 0.4)",
-    },
-    controls: {
-      display: "flex",
-      gap: "20px",
-      alignItems: "center",
-      justifyContent: "center",
-      marginBottom: "30px",
-      flexWrap: "wrap",
-    },
-    controlGroup: {
-      display: "flex",
-      flexDirection: "column",
-      alignItems: "center",
-      gap: "10px",
-    },
-    label: {
-      fontWeight: "600",
-      color: "#555",
-    },
-    numberInput: {
-      padding: "12px",
-      border: "2px solid #ddd",
-      borderRadius: "10px",
-      fontSize: "16px",
-      width: "80px",
-      textAlign: "center",
-      transition: "border-color 0.3s ease",
-    },
-    numberInputFocus: {
-      outline: "none",
-      borderColor: "#667eea",
-      boxShadow: "0 0 0 3px rgba(102, 126, 234, 0.1)",
-    },
-    splitBtn: {
-      background: "linear-gradient(45deg, #764ba2, #667eea)",
-      color: "white",
-      padding: "15px 40px",
-      border: "none",
-      borderRadius: "50px",
-      cursor: "pointer",
-      fontSize: "18px",
-      fontWeight: "600",
-      transition: "all 0.3s ease",
-      boxShadow: "0 5px 15px rgba(118, 75, 162, 0.4)",
-    },
-    splitBtnDisabled: {
-      opacity: "0.5",
-      cursor: "not-allowed",
-    },
-    preview: {
-      textAlign: "center",
-      marginBottom: "30px",
-    },
-    originalImage: {
-      maxWidth: "400px",
-      maxHeight: "300px",
-      borderRadius: "15px",
-      boxShadow: "0 10px 30px rgba(0,0,0,0.2)",
-      transition: "transform 0.3s ease",
-    },
-    puzzleGrid: {
-      display: "grid",
-      gap: "10px",
-      justifyContent: "center",
-      marginTop: "30px",
-      padding: "20px",
-      background: "rgba(255, 255, 255, 0.5)",
-      borderRadius: "15px",
-    },
-    puzzlePiece: {
-      borderRadius: "8px",
-      boxShadow: "0 5px 15px rgba(0,0,0,0.1)",
-      transition: "all 0.3s ease",
-      cursor: "pointer",
-    },
-    downloadAllBtn: {
-      background: "linear-gradient(45deg, #28a745, #20c997)",
-      color: "white",
-      padding: "15px 30px",
-      border: "none",
-      borderRadius: "50px",
-      cursor: "pointer",
-      fontSize: "16px",
-      fontWeight: "600",
-      marginTop: "20px",
-      transition: "all 0.3s ease",
-      boxShadow: "0 5px 15px rgba(40, 167, 69, 0.4)",
-    },
-    status: {
-      textAlign: "center",
-      marginTop: "20px",
-      fontWeight: "600",
-      color: "#555",
-      padding: "15px",
-      background: "rgba(102, 126, 234, 0.1)",
-      borderRadius: "10px",
-    },
-  };
   const [currentImage, setCurrentImage] = useState(null);
   const [puzzlePieces, setPuzzlePieces] = useState([]);
   const [rows, setRows] = useState(3);
   const [cols, setCols] = useState(3);
-  const [status, setStatus] = useState("");
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
   const handleImageFile = useCallback((file) => {
     if (!file.type.startsWith("image/")) {
-      setStatus("Please select a valid image file.");
       return;
     }
 
@@ -182,7 +24,6 @@ const App = () => {
           width: img.width,
           height: img.height,
         });
-        setStatus(`Image loaded: ${img.width}×${img.height}px`);
         setPuzzlePieces([]); // Clear previous pieces
       };
       img.src = e.target.result;
@@ -219,13 +60,8 @@ const App = () => {
     if (!currentImage) return;
 
     if (rows < 1 || cols < 1 || rows > 20 || cols > 20) {
-      setStatus(
-        "Please enter valid numbers between 1 and 20 for rows and columns."
-      );
       return;
     }
-
-    setStatus("Splitting image...");
 
     const canvas = document.createElement("canvas");
     const ctx = canvas.getContext("2d");
@@ -267,33 +103,6 @@ const App = () => {
     }
 
     setPuzzlePieces(pieces);
-    setStatus(
-      `Successfully split into ${rows}×${cols} = ${
-        rows * cols
-      } pieces! Click any piece to download it.`
-    );
-  };
-
-  const downloadPiece = (dataUrl, filename) => {
-    const link = document.createElement("a");
-    link.download = filename;
-    link.href = dataUrl;
-    link.click();
-  };
-
-  const downloadAllPieces = () => {
-    if (puzzlePieces.length === 0) return;
-
-    setStatus("Downloading all pieces...");
-
-    puzzlePieces.forEach((piece, index) => {
-      setTimeout(() => {
-        downloadPiece(piece.dataUrl, `puzzle_piece_${piece.number}.png`);
-        if (index === puzzlePieces.length - 1) {
-          setStatus("All pieces downloaded!");
-        }
-      }, index * 100);
-    });
   };
 
   const totalPieces = rows * cols;
@@ -338,7 +147,7 @@ const App = () => {
               e.target.style.boxShadow = "0 5px 15px rgba(102, 126, 234, 0.4)";
             }}
           >
-            📁 Choose Image
+            Select An Image
           </button>
           <input
             type="file"
@@ -401,7 +210,7 @@ const App = () => {
               }
             }}
           >
-            ✂️ Split into {totalPieces} Pieces
+            Generate Puzzle
           </button>
         </div>
 
@@ -456,9 +265,6 @@ const App = () => {
                     piece.col + 1
                   })`}
                   style={styles.puzzlePiece}
-                  onClick={() =>
-                    downloadPiece(piece.dataUrl, `piece_${piece.number}.png`)
-                  }
                   onMouseEnter={(e) => {
                     e.target.style.transform = "translateY(-5px) scale(1.05)";
                     e.target.style.boxShadow = "0 10px 25px rgba(0,0,0,0.2)";
@@ -470,32 +276,6 @@ const App = () => {
                 />
               ))}
             </div>
-
-            <div style={{ textAlign: "center" }}>
-              <button
-                onClick={downloadAllPieces}
-                style={styles.downloadAllBtn}
-                onMouseEnter={(e) => {
-                  e.target.style.transform = "translateY(-3px)";
-                  e.target.style.boxShadow =
-                    "0 8px 25px rgba(40, 167, 69, 0.6)";
-                }}
-                onMouseLeave={(e) => {
-                  e.target.style.transform = "translateY(0)";
-                  e.target.style.boxShadow =
-                    "0 5px 15px rgba(40, 167, 69, 0.4)";
-                }}
-              >
-                📥 Download All Pieces
-              </button>
-            </div>
-          </div>
-        )}
-
-        {/* Status */}
-        {status && (
-          <div style={styles.status}>
-            <p>{status}</p>
           </div>
         )}
       </div>
